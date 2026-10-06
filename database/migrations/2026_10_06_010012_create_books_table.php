@@ -13,13 +13,13 @@ return new class extends Migration
 
             $table->foreignId('category_id')
                 ->constrained('categories')
-                ->cascadeOnDelete();
+                ->restrictOnDelete();
 
             $table->string('title');
             $table->string('author');
             $table->string('publisher');
             $table->year('year');
-            $table->integer('stock');
+            $table->integer('stock')->default(0);
 
             $table->timestamps();
         });

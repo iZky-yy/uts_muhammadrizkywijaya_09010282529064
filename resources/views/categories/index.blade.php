@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Buku - Perpustakaan</title>
+    <title>Kategori - Perpustakaan</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -42,18 +42,16 @@
             <div class="flex items-center justify-between mb-6">
                 <div>
                     <h2 class="text-2xl font-bold text-gray-800">
-                        Data Buku
+                        Kategori
                     </h2>
-
                     <p class="text-gray-500 mt-1">
-                        Kelola data buku perpustakaan.
+                        Kelola kategori buku perpustakaan.
                     </p>
                 </div>
-                <a href="{{ route('books.create') }}"
+                <a href="{{ route('categories.create') }}"
                     class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg transition">
-                    + Tambah Buku
+                    + Tambah Kategori
                 </a>
-
             </div>
             @if (session('success'))
                 <div class="mb-5 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-lg">
@@ -83,22 +81,13 @@
                                     No
                                 </th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                                    Judul
+                                    Nama Kategori
                                 </th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                                    Penulis
+                                    Jumlah Buku
                                 </th>
                                 <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                                    Penerbit
-                                </th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                                    Tahun
-                                </th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                                    Stok
-                                </th>
-                                <th class="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                                    Kategori
+                                    Deskripsi
                                 </th>
                                 <th class="px-6 py-4 text-right text-sm font-semibold text-gray-700">
                                     Aksi
@@ -106,51 +95,33 @@
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                            @forelse($books as $book)
+                            @forelse($categories as $category)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 text-sm text-gray-600">
-                                        {{ $loop->iteration }}
+                                        {{ $categories->firstItem() + $loop->index }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <p class="font-medium text-gray-800">
-                                            {{ $book->title }}
+                                            {{ $category->name }}
                                         </p>
-
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                        {{ $book->author }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                        {{ $book->publisher }}
-                                    </td>
-                                    <td class="px-6 py-4 text-sm text-gray-600">
-                                        {{ $book->year }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium
-                                        {{ $book->stock > 0 ? 'bg-blue-50 text-blue-600' : 'bg-red-50 text-red-600' }}">
-                                            {{ $book->stock }}
+                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-50 text-blue-600">
+                                            {{ $category->books_count }} buku
                                         </span>
                                     </td>
-                                    <td class="px-6 py-4">
-                                        <span
-                                            class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
-                                            {{ $book->category->name }}
-                                        </span>
+                                    <td class="px-6 py-4 text-sm text-gray-600">
+                                        {{ $category->description ?: '-' }}
                                     </td>
                                     <td class="px-6 py-4">
                                         <div class="flex justify-end gap-2">
-                                            <a href="{{ route('books.show', $book) }}"
-                                                class="px-3 py-1.5 text-sm border border-gray-400 text-gray-600 rounded-lg hover:bg-gray-50">
-                                                Detail
-                                            </a>
-                                            <a href="{{ route('books.edit', $book) }}"
+                                            <a href="{{ route('categories.edit', $category) }}"
                                                 class="px-3 py-1.5 text-sm border border-blue-500 text-blue-600 rounded-lg hover:bg-blue-50">
                                                 Edit
                                             </a>
-                                            <form action="{{ route('books.destroy', $book) }}" method="POST"
-                                                onsubmit="return confirm('Apakah kamu yakin ingin menghapus buku ini?')">
+                                            <form action="{{ route('categories.destroy', $category) }}" method="POST"
+                                                onsubmit="return confirm('Apakah kamu yakin ingin menghapus kategori ini?')">
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="submit"
@@ -163,14 +134,20 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="8" class="px-6 py-10 text-center text-gray-500">
-                                        Belum ada data buku.
+                                    <td colspan="5" class="px-6 py-10 text-center text-gray-500">
+                                        Belum ada kategori.
                                     </td>
                                 </tr>
                             @endforelse
                         </tbody>
                     </table>
                 </div>
+                @if ($categories->hasPages())
+                    <div class="px-6 py-4 border-t border-gray-200">
+                        {{ $categories->links() }}
+
+                    </div>
+                @endif
             </div>
         </main>
     </div>
