@@ -14,7 +14,7 @@
                 Perpustakaan
             </h1>
             <p class="text-sm text-gray-500">
-                SMA Negeri 1
+                Universitas Sriwijaya
             </p>
         </div>
         <div class="text-sm text-gray-700">
