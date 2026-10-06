@@ -32,10 +32,12 @@
                         Kategori
                     </a>
                 </div>
-                <div class="text-sm text-gray-700">
-                    {{ auth()->user()->name }}
+                <div class="flex items-center gap-4"> <span class="text-sm text-gray-700"> {{ auth()->user()->name }}
+                    </span>
+                    <form method="POST" action="{{ route('logout') }}"> @csrf <button type="submit"
+                            class="text-sm font-medium text-red-600 hover:text-red-700 hover:underline"> Logout
+                        </button> </form>
                 </div>
-
             </div>
         </nav>
         <main class="max-w-7xl mx-auto px-6 py-8">
